@@ -4,12 +4,12 @@ let cfg=LS('cfg')||{url:'http://localhost:11434',model:''},chats=LS('chats')||[]
 const base=()=>cfg.url.replace(/\/$/,'');
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const md=s=>esc(s).split('```').map((p,i)=>i%2?'<pre><code>'+p.replace(/^\w*\n/,'')+'</code></pre>':p.replace(/`([^`\n]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>')).join('');
-const SYS='You are Nexus, a calm, clear and helpful assistant. Answer accurately and say when you are unsure.';
+const SYS='You are Nexus, the AI assistant inside the Nexus AI app. If asked who you are, what your name is, or who made you, say you are Nexus, a personal AI assistant that runs privately on the user\'s own device. Never call yourself Llama and never mention Meta. Reply briefly and clearly unless asked for detail.';
 const ENGINE_ERR='The AI engine is not reachable. Install Ollama (ollama.com), run "ollama pull llama3.2", start it with OLLAMA_ORIGINS=* and set its address in Settings.';
 
 /* streaming from Ollama */
 async function stream(msgs,onTok,signal){
-  const r=await fetch(base()+'/api/chat',{method:'POST',signal,body:JSON.stringify({model:cfg.model,messages:[{role:'system',content:SYS},...msgs],stream:true})});
+  const r=await fetch(base()+'/api/chat',{method:'POST',signal,body:JSON.stringify({model:cfg.model,messages:[{role:'system',content:SYS},...msgs.slice(-8)],stream:true,keep_alive:'30m',options:{num_ctx:2048,num_predict:1024}})});
   if(!r.ok)throw new Error('Ollama returned '+r.status+': '+(await r.text()).slice(0,200));
   const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
   for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
@@ -32,7 +32,7 @@ function renderList(){
 }
 function renderMsgs(){
   const R=$('#reply');R.innerHTML='';
-  if(!cur.msgs.length){R.innerHTML='<div class="hello"><img src="icon.svg" alt=""><h1>Nexus AI</h1><p>Private chat with a model running on your own device.</p></div>';return}
+  if(!cur.msgs.length){R.innerHTML='<div class="hello"><img src="icon.svg" alt=""><h1>Hello, '+esc(window.uname||'there')+'!</h1><p>How can I help you today?</p><div class="btns" style="justify-content:center;margin-top:16px"><button class="ib" data-s="Create a content plan for this month">Content plan</button><button class="ib" data-s="Help me write an email to my team">Write an email</button><button class="ib" data-s="Explain artificial intelligence in simple words">Explain AI</button></div></div>';R.onclick=e=>{if(e.target.dataset.s){$('#command').value=e.target.dataset.s;$('#command').focus()}};return}
   cur.msgs.forEach((m,i)=>{
     const d=document.createElement('div');d.className='msg '+(m.role=='user'?'u':'a');
     d.innerHTML=md(m.content)+(m.role=='assistant'&&m.content?'<div class="act"><button>Copy</button>'+(i==cur.msgs.length-1?'<button>Regenerate</button>':'')+'</div>':'');
@@ -44,7 +44,7 @@ function renderMsgs(){
 }
 async function run(){
   const a={role:'assistant',content:''};cur.msgs.push(a);renderMsgs();
-  ctl=new AbortController();$('#stopBtn').hidden=false;$('#sendBtn').hidden=true;
+  $('#reply').lastChild.innerHTML='<span class="small">Thinking…</span>';ctl=new AbortController();$('#stopBtn').hidden=false;$('#sendBtn').hidden=true;
   try{await stream(cur.msgs.slice(0,-1),t=>{a.content+=t;const l=$('#reply').lastChild;l.innerHTML=md(a.content);$('#reply').scrollTop=1e9},ctl.signal)}
   catch(e){if(e.name!='AbortError'){a.content+='\n\n'+(e instanceof TypeError?ENGINE_ERR:e.message)}}
   ctl=null;$('#stopBtn').hidden=true;$('#sendBtn').hidden=false;save();renderMsgs();
@@ -116,6 +116,7 @@ $('#kform').onsubmit=async e=>{
   }catch(err){O.innerHTML='<p class="err">Could not reach Wikipedia. Check your connection.</p>'}
 };
 
+function warm(){if(cfg.model)fetch(base()+'/api/generate',{method:'POST',body:JSON.stringify({model:cfg.model,keep_alive:'30m'})}).catch(()=>{})}
 /* settings */
 function openSettings(msg){$('#url').value=cfg.url;$('#dstat').textContent=msg||'';loadModels();$('#dlg').showModal()}
 async function loadModels(){
@@ -127,10 +128,11 @@ async function loadModels(){
   catch(e){$('#dstat').textContent=ENGINE_ERR}
 }
 $('#settingsBtn').onclick=()=>openSettings();$('#refresh').onclick=loadModels;
-$('#saveCfg').onclick=()=>{cfg={url:$('#url').value||cfg.url,model:$('#model').value};LS('cfg',cfg)};
+$('#saveCfg').onclick=()=>{cfg={url:$('#url').value||cfg.url,model:$('#model').value};LS('cfg',cfg);warm()};
 
 /* tabs, PWA, start */
 $$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button,.pane').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on')});
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 cur=chats[0]||null;if(!cur)newChat();else show();
-window.firstRun=()=>{if(!cfg.model)openSettings('Connect to your local AI engine to start chatting.')};
+window.firstRun=()=>{if(!cfg.model)openSettings('Connect to your local AI engine to start chatting.');else warm()};
+                                                                    
