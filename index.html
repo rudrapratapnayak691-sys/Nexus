@@ -84,6 +84,7 @@
   <h2>Settings</h2>
   <label>Ollama address<input id="url" placeholder="http://localhost:11434"></label>
   <label>Model<select id="model"></select></label>
+  <label>Voice<select id="vstyle"><option value="ultron">Ultron (deep, slow)</option><option value="normal">Normal</option></select></label>
   <button type="button" id="refresh" class="ib">Refresh models</button>
   <p id="dstat"></p>
   <p class="small">Start Ollama with OLLAMA_ORIGINS=* so this page may connect. Image questions need a vision model such as llava or moondream.</p>
@@ -100,4 +101,5 @@
 <script src="auth.js"></script>
 <script src="admin.js"></script>
 <script src="dev.js"></script>
+<script src="voice.js"></script>
 </body></html>

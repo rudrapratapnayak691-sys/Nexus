@@ -69,17 +69,15 @@ function listen(onText,cont){
   if(!SR){alert('Speech recognition is not supported in this browser. Try Chrome.');return null}
   const r=new SR();r.continuous=!!cont;r.interimResults=!!cont;r.lang=navigator.language||'en-US';
   r.onresult=e=>{const x=e.results[e.results.length-1];onText(x[0].transcript,x.isFinal)};return r}
-function speak(t){
-  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/[`*#]/g,''));
-  const v=speechSynthesis.getVoices().find(v=>/en/i.test(v.lang)&&/natural|google|neural/i.test(v.name));if(v)u.voice=v;
-  u.rate=1;u.pitch=.95;u.onstart=()=>$('#orb').className='live talk';u.onend=()=>$('#orb').className=vOn?'live':'';speechSynthesis.speak(u)}
+function speak(t){speechSynthesis.cancel();const ul=(cfg.voice||'ultron')=='ultron',V=speechSynthesis.getVoices(),v=V.find(v=>/^en/i.test(v.lang)&&/male|david|daniel|guy|george|ryan/i.test(v.name))||V.find(v=>/^en/i.test(v.lang)),P=(t.replace(/[`*#]/g,'').match(/[^.!?\n]+[.!?]*/g)||[]).filter(s=>s.trim());
+  P.forEach((s,i)=>{const u=new SpeechSynthesisUtterance(s.trim());if(v)u.voice=v;u.rate=ul?.82:1;u.pitch=ul?.1:1;if(i==0)u.onstart=()=>$('#orb').className='live talk';if(i==P.length-1)u.onend=()=>$('#orb').className=vOn?'live':'';speechSynthesis.speak(u)})}
 $('#voiceBtn').onclick=()=>{const r=listen(t=>{$('#command').value=t},false);if(r)r.start()};
 
 /* Vision: voice + camera */
 let vOn=false,vRec=null,vHist=[],stm=null,vBusy=false;
 function logV(c,t){const d=document.createElement('div');d.className='msg '+(c=='u'?'u':'');d.innerHTML=md(t);$('#vlog').append(d);$('#vlog').scrollTop=1e9;return d}
 function frame(){const v=$('#cam'),c=document.createElement('canvas');c.width=Math.min(v.videoWidth,640);c.height=c.width*v.videoHeight/v.videoWidth;c.getContext('2d').drawImage(v,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.7).split(',')[1]}
-async function ask(t){
+async function ask(t){if(window.nexusRoute&&await nexusRoute(t))return;
   if(!cfg.model){$('#vstatus').textContent='Choose a model in Settings first.';return}
   const m={role:'user',content:t};if(stm)m.images=[frame()];
   vHist.push(m);logV('u',t);const d=logV('a','');let out='';vBusy=true;$('#vstatus').textContent='Thinking…';
@@ -118,7 +116,7 @@ $('#kform').onsubmit=async e=>{
 
 function warm(){if(cfg.model)fetch(base()+'/api/generate',{method:'POST',body:JSON.stringify({model:cfg.model,keep_alive:'30m'})}).catch(()=>{})}
 /* settings */
-function openSettings(msg){$('#url').value=cfg.url;$('#dstat').textContent=msg||'';loadModels();$('#dlg').showModal()}
+function openSettings(msg){$('#url').value=cfg.url;$('#vstyle').value=cfg.voice||'ultron';$('#dstat').textContent=msg||'';loadModels();$('#dlg').showModal()}
 async function loadModels(){
   const s=$('#model');s.innerHTML='';
   try{const j=await (await fetch($('#url').value.replace(/\/$/,'')+'/api/tags')).json();
@@ -128,7 +126,7 @@ async function loadModels(){
   catch(e){$('#dstat').textContent=ENGINE_ERR}
 }
 $('#settingsBtn').onclick=()=>openSettings();$('#refresh').onclick=loadModels;
-$('#saveCfg').onclick=()=>{cfg={url:$('#url').value||cfg.url,model:$('#model').value};LS('cfg',cfg);warm()};
+$('#saveCfg').onclick=()=>{cfg={url:$('#url').value||cfg.url,model:$('#model').value,voice:$('#vstyle').value};LS('cfg',cfg);warm()};
 
 /* tabs, PWA, start */
 $$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button,.pane').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on')});
