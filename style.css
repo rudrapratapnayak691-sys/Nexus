@@ -82,3 +82,38 @@ dialog label{display:flex;flex-direction:column;gap:4px;color:var(--mut)}
 .tk{display:flex;gap:10px;padding:6px 0;align-items:center}.tk input{width:auto}
 .ring{width:96px;height:96px;border-radius:50%;background:conic-gradient(#12d6c0 calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;margin:10px 0}
 .ring b{background:var(--card);width:76px;height:76px;border-radius:50%;display:grid;place-items:center}
+#dv{position:fixed;inset:0;z-index:15;background:#070d1a;color:#e6edf3;display:grid;grid-template-columns:230px minmax(0,1fr) 320px;gap:14px;padding:14px;overflow:auto;--p0:#0d1627;--ln:#1a2740;--ac:#2f6bff}
+#dv.light{background:#eef2f9;color:#0d1627;--p0:#fff;--ln:#d6deec}
+.dn,.dc,.dcard{background:var(--p0);border:1px solid var(--ln);border-radius:18px}
+.dn{padding:14px;display:flex;flex-direction:column;gap:6px}
+.dbrand{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:10px}.dbrand img{width:28px}.dbrand i{width:8px;height:8px;border-radius:50%;background:var(--ac)}
+.dn nav{display:flex;flex-direction:column;gap:4px;flex:1}
+.dn nav button{text-align:left;border:0;background:none;color:inherit;opacity:.75;white-space:nowrap}
+.dn nav button.on{background:#14294f;color:#e6edf3;opacity:1}
+.dmode{display:flex;justify-content:space-between;align-items:center;opacity:.8;font-size:14px}.dmode input{width:auto}
+.duser{display:grid;grid-template-columns:40px 1fr;gap:0 10px;align-items:center;margin-top:8px}
+.duser b{grid-row:span 2;width:40px;height:40px;border-radius:50%;background:var(--g);display:grid;place-items:center;color:#04121a}.duser small{opacity:.6}
+.dc{padding:18px;display:flex;flex-direction:column;position:relative;min-height:70vh}
+#dview{flex:1;overflow:auto}
+.dclose{position:absolute;right:12px;top:12px;min-height:36px;padding:4px 12px}
+.dhi{font-size:clamp(22px,4vw,32px);line-height:1.25;max-width:80%}.dhi span{color:#4a8bff}
+.dhero{position:relative;display:grid;place-items:center;margin:16px 0}
+.robot{width:min(60vw,260px);filter:drop-shadow(0 0 30px #2f6bff88)}
+.bub{position:absolute;max-width:150px;font-size:14px;text-align:left;background:#14294f;color:#e6edf3;border:0;border-radius:16px;padding:10px 12px;min-height:0}
+.b1{left:0;top:10%}.b2{right:0;top:6%}.b3{left:0;bottom:6%}.b4{right:0;bottom:8%}
+.dm{margin:10px 0;padding:10px 14px;border-radius:14px;max-width:90%;overflow-wrap:anywhere}.dm.u{background:#14294f;color:#e6edf3;margin-left:auto}.dm.a{border:1px solid var(--ln)}
+#dform{display:flex;gap:8px;margin-top:12px}#dform input{border-radius:999px}#dform button{border-radius:50%;width:46px;padding:0;flex:none}.dsend{background:var(--ac);border:0;color:#fff}
+.dchips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}.dchips button{border-radius:999px;font-size:14px;min-height:38px}
+.dr{display:flex;flex-direction:column;gap:14px}.dcard{padding:16px}.dcard h3{margin-bottom:10px}
+.dint{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.dint button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;padding:0;color:inherit}
+.dint i{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-weight:700;color:#fff}
+.dt{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln);align-items:center}.dt input{width:auto}
+#dtf{display:flex;gap:8px;margin-top:10px}#dtf button{width:70px}
+#dprod{display:flex;gap:16px;align-items:center}
+.dring{width:110px;height:110px;border-radius:50%;background:conic-gradient(#4a8bff calc(var(--p)*1%),var(--ln) 0);display:grid;place-items:center;flex:none}
+.dring b{width:86px;height:86px;border-radius:50%;background:var(--p0);display:grid;place-items:center;font-size:22px}
+.dstat{display:flex;flex-direction:column}.dstat small{opacity:.6}.dstat b{margin-bottom:6px}
+.dcal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;margin-top:10px}.dcal .today{background:var(--ac);border-radius:8px;color:#fff}
+#dnote{height:50vh;margin-top:10px}
+@media(max-width:900px){#dv{grid-template-columns:1fr}.dn{flex-direction:column}.dn nav{flex-direction:row;overflow-x:auto}.dr{order:3}}
+@media(max-width:700px){.dhero{grid-template-columns:1fr 1fr;gap:8px}.robot{grid-column:1/-1;justify-self:center}.bub{position:static;max-width:none}.dhi{max-width:100%;padding-right:60px}}

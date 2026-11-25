@@ -13,6 +13,7 @@
   <button id="newChat" class="grad">New chat</button>
   <input id="search" placeholder="Search chats">
   <div id="list"></div>
+  <button id="devBtn" class="grad">For the devs</button>
   <div id="me" class="small"></div><button id="logout" hidden>Log out</button>
   <button id="settingsBtn">Settings</button>
 </aside>
@@ -69,6 +70,8 @@
 <div class="card"><h3>Today's tasks</h3><div id="tl"></div><form id="tf"><input id="ti" placeholder="Add a task" required><button class="grad">Add</button></form><div id="ring"></div></div>
 <div class="card"><h3>Needs the native Android app</h3><p class="small">Wi-Fi name, temperature, real phone storage and RAM use, battery health, uptime, installed apps, brightness and system volume. A website cannot read or change these.</p></div>
 </div></div></section>
+<div id="dv" hidden></div>
+<dialog id="dpw"><form id="dpwf"><h2>Developer password</h2><input id="dpwi" type="password" autocomplete="off" required><p id="dpwm" class="err"></p><button class="grad">Unlock</button><button type="button" class="ib" id="dpwx">Cancel</button></form></dialog>
 <dialog id="pw"><form id="pwf"><h2>Admin password</h2><input id="pwi" type="password" autocomplete="off" required><p id="pwm" class="err"></p><button class="grad">Unlock</button><button type="button" class="ib" onclick="pw.close()">Cancel</button></form></dialog>
 <section id="codex" class="pane"><div class="note"><h2>Codex needs a server</h2>
     <p>Multi-file projects, a terminal and sandboxed code execution can't run safely in a browser page. They need the Node backend (phase 3). Until it is connected, this mode stays off instead of pretending.</p></div></section>
@@ -96,4 +99,5 @@
 <script src="script.js"></script>
 <script src="auth.js"></script>
 <script src="admin.js"></script>
+<script src="dev.js"></script>
 </body></html>

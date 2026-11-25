@@ -1,5 +1,5 @@
 /* 1) Paste your Supabase Project URL and anon (public) key below. */
-const SUPABASE_URL='https://jdgojghxrvarhwwqhpoy.supabase.co',SUPABASE_KEY='sb_publishable_n5AXaDvoHA5W40M7KUGJRg_Sdg8ct5t';
+const SUPABASE_URL='PASTE_PROJECT_URL_HERE',SUPABASE_KEY='PASTE_ANON_KEY_HERE';
 const sb=SUPABASE_URL.startsWith('https://')&&window.supabase?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let user=null,mode='login',tm=null;
 const A=id=>document.getElementById(id);
@@ -36,7 +36,7 @@ A('af').onsubmit=async e=>{
     else{r=await sb.auth.updateUser({password:pw});if(r.error)throw r.error;setMode('login');enter(r.data.user)}
   }catch(x){say(x.message,1)}
   A('ab').disabled=false};
-A('logout').onclick=async()=>{await sb.auth.signOut();localStorage.removeItem('chats');localStorage.removeItem('tasks');sessionStorage.removeItem('adm');location.reload()};
+A('logout').onclick=async()=>{await sb.auth.signOut();localStorage.removeItem('chats');localStorage.removeItem('tasks');localStorage.removeItem('dnotes');sessionStorage.removeItem('dv');sessionStorage.removeItem('adm');location.reload()};
 setMode('login');
 if(sb){
   sb.auth.onAuthStateChange((ev,s)=>{
