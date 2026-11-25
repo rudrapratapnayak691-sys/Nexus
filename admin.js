@@ -51,8 +51,8 @@ const mk=(n,f)=>{const b=document.createElement('button');b.className='ib';b.tex
 D('ctl').append(...CTL.map(([n,f])=>mk(n,f)));
 D('apps').append(...Object.keys(APPS).map(k=>mk(APPS[k][0],()=>app(k))));
 function reveal(){D('lockmsg').hidden=true;D('abody').hidden=false;paint();drawTasks();clearInterval(timer);timer=setInterval(()=>D('admin').classList.contains('on')&&paint(),5000)}
-const ask=()=>{if(!unlocked){D('pwm').textContent='';D('pwi').value='';D('pw').showModal()}};
-D('unlock').onclick=ask;document.querySelector('[data-t=admin]').addEventListener('click',ask);
+const askPw=()=>{if(!unlocked){D('pwm').textContent='';D('pwi').value='';D('pw').showModal()}};
+D('unlock').onclick=askPw;document.querySelector('[data-t=admin]').addEventListener('click',askPw);
 D('pwf').onsubmit=async e=>{e.preventDefault();
   if(await sha(D('pwi').value)==ADMIN_HASH){unlocked=true;sessionStorage.setItem('adm','1');D('pw').close();reveal()}
   else{D('pwm').textContent='Wrong password.';await new Promise(r=>setTimeout(r,1000))}};
