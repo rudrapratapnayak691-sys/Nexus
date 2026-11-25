@@ -73,3 +73,12 @@ dialog label{display:flex;flex-direction:column;gap:4px;color:var(--mut)}
 #af img{width:64px;margin:0 auto}
 #af .ib{justify-content:center}
 #me{overflow:hidden;text-overflow:ellipsis}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));max-width:1000px;margin:12px auto;width:100%}
+#abody{overflow:auto;flex:1}
+#dev{width:100%;font-size:14px;border-collapse:collapse}
+#dev td{padding:4px 0;vertical-align:top;overflow-wrap:anywhere}#dev td:first-child{color:var(--mut);width:42%}
+#cf,#tf{display:flex;gap:8px;margin:8px 0}#cf button,#tf button{width:80px}
+.tk{display:flex;gap:10px;padding:6px 0;align-items:center}.tk input{width:auto}
+.ring{width:96px;height:96px;border-radius:50%;background:conic-gradient(#12d6c0 calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;margin:10px 0}
+.ring b{background:var(--card);width:76px;height:76px;border-radius:50%;display:grid;place-items:center}

@@ -23,6 +23,7 @@
       <button data-t="chat" class="on">Chat</button>
       <button data-t="vision">Vision</button>
       <button data-t="know">Knowledge</button>
+      <button data-t="admin">Admin</button>
       <button data-t="codex">Codex</button>
       <button data-t="image">Images</button>
     </nav>
@@ -59,7 +60,17 @@
     <div id="kout"></div>
   </section>
 
-  <section id="codex" class="pane"><div class="note"><h2>Codex needs a server</h2>
+  <section id="admin" class="pane"><div id="lockmsg" class="note"><h2>Admin panel</h2><p>Locked. Enter the admin password to continue.</p><button id="unlock" class="grad">Unlock</button></div>
+<div id="abody" hidden><div class="grid">
+<div class="card"><h3>Device status</h3><table id="dev"></table></div>
+<div class="card"><h3>Command NEXUS</h3><form id="cf"><input id="ci" placeholder='e.g. "open YouTube"'><button class="grad">Run</button></form><button id="cmic" class="ib">Speak</button><p id="co" class="small"></p></div>
+<div class="card"><h3>Controls</h3><div class="btns" id="ctl"></div></div>
+<div class="card"><h3>Integrations</h3><div class="btns" id="apps"></div></div>
+<div class="card"><h3>Today's tasks</h3><div id="tl"></div><form id="tf"><input id="ti" placeholder="Add a task" required><button class="grad">Add</button></form><div id="ring"></div></div>
+<div class="card"><h3>Needs the native Android app</h3><p class="small">Wi-Fi name, temperature, real phone storage and RAM use, battery health, uptime, installed apps, brightness and system volume. A website cannot read or change these.</p></div>
+</div></div></section>
+<dialog id="pw"><form id="pwf"><h2>Admin password</h2><input id="pwi" type="password" autocomplete="off" required><p id="pwm" class="err"></p><button class="grad">Unlock</button><button type="button" class="ib" onclick="pw.close()">Cancel</button></form></dialog>
+<section id="codex" class="pane"><div class="note"><h2>Codex needs a server</h2>
     <p>Multi-file projects, a terminal and sandboxed code execution can't run safely in a browser page. They need the Node backend (phase 3). Until it is connected, this mode stays off instead of pretending.</p></div></section>
 
   <section id="image" class="pane"><div class="note"><h2>Image Studio needs ComfyUI</h2>
@@ -84,4 +95,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="script.js"></script>
 <script src="auth.js"></script>
+<script src="admin.js"></script>
 </body></html>

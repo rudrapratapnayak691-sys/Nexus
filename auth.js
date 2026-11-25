@@ -1,5 +1,5 @@
 /* 1) Paste your Supabase Project URL and anon (public) key below. */
-const SUPABASE_URL='https://jdgojghxrvarhwwqhpoy.supabase.co',SUPABASE_KEY='sb_publishable_n5AXaDvoHA5W40M7KUGJRg_Sdg8ct5t';
+const SUPABASE_URL='PASTE_PROJECT_URL_HERE',SUPABASE_KEY='PASTE_ANON_KEY_HERE';
 const sb=SUPABASE_URL.startsWith('https://')&&window.supabase?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let user=null,mode='login',tm=null;
 const A=id=>document.getElementById(id);
@@ -15,7 +15,7 @@ function setMode(m){mode=m;const L=m=='login',S=m=='signup',F=m=='forgot',R=m=='
 const clean=c=>({id:c.id,user_id:user.id,title:c.title,msgs:c.msgs.map(({images,...m})=>m),updated_at:new Date().toISOString()});
 async function enter(u){
   user=u;A('auth').hidden=true;A('logout').hidden=false;
-  const name=(u.user_metadata&&u.user_metadata.username)||u.email;A('me').textContent=name;
+  const name=(u.user_metadata&&u.user_metadata.username)||u.email;A('me').textContent=name;window.uname=name.split('@')[0];
   const {data,error}=await sb.from('nexus_chats').select('id,title,msgs').order('updated_at',{ascending:false});
   if(error)A('me').textContent=name+' (sync error: '+error.message+')';
   else if(data.length)chats=data.map(d=>({id:d.id,title:d.title,msgs:d.msgs||[]}));
@@ -36,7 +36,7 @@ A('af').onsubmit=async e=>{
     else{r=await sb.auth.updateUser({password:pw});if(r.error)throw r.error;setMode('login');enter(r.data.user)}
   }catch(x){say(x.message,1)}
   A('ab').disabled=false};
-A('logout').onclick=async()=>{await sb.auth.signOut();localStorage.removeItem('chats');location.reload()};
+A('logout').onclick=async()=>{await sb.auth.signOut();localStorage.removeItem('chats');localStorage.removeItem('tasks');sessionStorage.removeItem('adm');location.reload()};
 setMode('login');
 if(sb){
   sb.auth.onAuthStateChange((ev,s)=>{

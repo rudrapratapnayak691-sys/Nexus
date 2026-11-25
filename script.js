@@ -135,4 +135,3 @@ $$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button,.pane').forEach(x=
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 cur=chats[0]||null;if(!cur)newChat();else show();
 window.firstRun=()=>{if(!cfg.model)openSettings('Connect to your local AI engine to start chatting.');else warm()};
-                                                                    
